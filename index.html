@@ -1,0 +1,1957 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Pico AI – Your Offline + Online AI Companion</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta
+    name="description"
+    content="Pico AI is a cute, powerful AI companion that exists as both a physical bot and a software assistant. Offline + online AI, subscription-based and built for real life."
+  />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+    rel="stylesheet"
+  />
+
+  <style>
+    :root {
+      --bg-main: #050815;
+      --bg-alt: #070b1c;
+      --bg-card: rgba(17, 24, 39, 0.9);
+      --accent: #7f5af0;
+      --accent-soft: rgba(127, 90, 240, 0.24);
+      --accent-secondary: #2cb9ff;
+      --text-main: #f9fafb;
+      --text-muted: #9ca3af;
+      --border-subtle: rgba(148, 163, 184, 0.35);
+      --danger: #fb7185;
+      --success: #22c55e;
+      --shadow-soft: 0 22px 60px rgba(0, 0, 0, 0.7);
+      --radius-xl: 1.5rem;
+      --radius-lg: 1rem;
+      --radius-pill: 999px;
+      --transition-fast: 180ms ease-out;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html,
+    body {
+      font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont,
+        "Segoe UI", sans-serif;
+      background: radial-gradient(circle at top, #101529 0, #050815 40%, #020617 100%);
+      color: var(--text-main);
+      scroll-behavior: smooth;
+    }
+
+    body {
+      min-height: 100vh;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    img {
+      max-width: 100%;
+      display: block;
+    }
+
+    /* Layout */
+
+    .page {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 1.25rem 1.25rem 3rem;
+    }
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      backdrop-filter: blur(18px);
+      background: linear-gradient(
+        to bottom,
+        rgba(5, 8, 21, 0.95),
+        rgba(5, 8, 21, 0.7),
+        transparent
+      );
+      border-bottom: 1px solid rgba(148, 163, 184, 0.18);
+    }
+
+    .nav-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0.85rem 1.25rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+
+    .logo-orb {
+      width: 32px;
+      height: 32px;
+      border-radius: 999px;
+      background: conic-gradient(
+        from 200deg,
+        #7f5af0,
+        #2cb9ff,
+        #22c55e,
+        #fb7185,
+        #7f5af0
+      );
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 0 30px rgba(127, 90, 240, 0.7);
+      position: relative;
+      overflow: hidden;
+      isolation: isolate;
+    }
+
+    .logo-orb-inner {
+      width: 70%;
+      height: 70%;
+      border-radius: 999px;
+      background: radial-gradient(circle at 30% 20%, #ffffff, #020617);
+      mix-blend-mode: screen;
+    }
+
+    .logo-text-main {
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      font-size: 1.1rem;
+    }
+
+    .logo-text-tag {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      letter-spacing: 0.18em;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 1.75rem;
+      font-size: 0.9rem;
+      color: var(--text-muted);
+    }
+
+    .nav-links a {
+      position: relative;
+      padding-bottom: 0.1rem;
+    }
+
+    .nav-links a::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      width: 0;
+      height: 2px;
+      border-radius: 999px;
+      background: linear-gradient(90deg, var(--accent), var(--accent-secondary));
+      transition: width var(--transition-fast);
+    }
+
+    .nav-links a:hover {
+      color: var(--text-main);
+    }
+
+    .nav-links a:hover::after {
+      width: 100%;
+    }
+
+    .nav-cta {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .btn {
+      border-radius: var(--radius-pill);
+      border: 1px solid transparent;
+      padding: 0.6rem 1.2rem;
+      font-size: 0.85rem;
+      font-weight: 500;
+      cursor: pointer;
+      background: transparent;
+      color: var(--text-main);
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      transition: transform var(--transition-fast),
+        box-shadow var(--transition-fast),
+        background var(--transition-fast),
+        border var(--transition-fast),
+        color var(--transition-fast);
+      white-space: nowrap;
+    }
+
+    .btn-outline {
+      border-color: var(--border-subtle);
+      color: var(--text-muted);
+    }
+
+    .btn-outline:hover {
+      border-color: var(--accent-secondary);
+      color: var(--text-main);
+      box-shadow: 0 0 20px rgba(44, 185, 255, 0.3);
+      transform: translateY(-1px);
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--accent), var(--accent-secondary));
+      box-shadow: 0 14px 30px rgba(127, 90, 240, 0.5);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px) scale(1.02);
+      box-shadow: 0 22px 50px rgba(127, 90, 240, 0.7);
+    }
+
+    .btn-pill-soft {
+      border-radius: var(--radius-pill);
+      padding: 0.18rem 0.65rem;
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid rgba(148, 163, 184, 0.5);
+      font-size: 0.7rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--accent-secondary);
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .pill-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 999px;
+      background: radial-gradient(circle at 30% 30%, #ffffff, #22c55e);
+      box-shadow: 0 0 10px rgba(34, 197, 94, 0.8);
+    }
+
+    .nav-mobile-toggle {
+      display: none;
+      width: 2.2rem;
+      height: 2.2rem;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.5);
+      background: radial-gradient(circle at 0 0, rgba(127, 90, 240, 0.3), #020617);
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+    }
+
+    .nav-mobile-toggle span {
+      width: 1.3rem;
+      height: 1.7px;
+      border-radius: 999px;
+      background: #e5e7eb;
+      position: relative;
+      transition: all 180ms ease-out;
+    }
+
+    .nav-mobile-toggle span::before,
+    .nav-mobile-toggle span::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      width: 100%;
+      height: 1.7px;
+      border-radius: 999px;
+      background: #e5e7eb;
+      transition: all 180ms ease-out;
+    }
+
+    .nav-mobile-toggle span::before {
+      top: -5px;
+    }
+
+    .nav-mobile-toggle span::after {
+      top: 5px;
+    }
+
+    .nav-mobile-toggle.active span {
+      background: transparent;
+    }
+
+    .nav-mobile-toggle.active span::before {
+      transform: translateY(5px) rotate(45deg);
+    }
+
+    .nav-mobile-toggle.active span::after {
+      transform: translateY(-5px) rotate(-45deg);
+    }
+
+    .nav-links-mobile {
+      display: none;
+      flex-direction: column;
+      padding: 0 1.25rem 0.75rem;
+      gap: 0.75rem;
+      font-size: 0.92rem;
+      background: radial-gradient(circle at top, #0b1024, #020617);
+      border-bottom: 1px solid rgba(148, 163, 184, 0.28);
+    }
+
+    .nav-links-mobile.open {
+      display: flex;
+    }
+
+    .nav-links-mobile a {
+      padding: 0.4rem 0;
+      color: var(--text-muted);
+    }
+
+    .nav-links-mobile a:hover {
+      color: var(--text-main);
+    }
+
+    .page-main {
+      padding-top: 1.5rem;
+    }
+
+    /* Hero */
+
+    .hero {
+      display: grid;
+      grid-template-columns: minmax(0, 1.4fr) minmax(0, 1.1fr);
+      gap: 2.2rem;
+      align-items: center;
+      margin-top: 1.5rem;
+    }
+
+    .hero-left {
+      display: flex;
+      flex-direction: column;
+      gap: 1.4rem;
+    }
+
+    .hero-eyebrow {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+    }
+
+    .hero-eyebrow span {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    .hero-title {
+      font-size: clamp(2.2rem, 4vw, 3.1rem);
+      line-height: 1.08;
+      font-weight: 800;
+      letter-spacing: 0.01em;
+    }
+
+    .hero-title span.accent {
+      background: linear-gradient(135deg, var(--accent), var(--accent-secondary));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .hero-subtitle {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      max-width: 32rem;
+    }
+
+    .hero-highlight {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 0.8rem;
+      margin-top: 0.4rem;
+    }
+
+    .hero-highlight-item {
+      border-radius: var(--radius-lg);
+      border: 1px solid rgba(148, 163, 184, 0.45);
+      background: radial-gradient(circle at top left, rgba(127, 90, 240, 0.13), transparent);
+      padding: 0.7rem 0.75rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.12rem;
+    }
+
+    .hero-highlight-item strong {
+      font-size: 0.85rem;
+    }
+
+    .hero-highlight-item span {
+      font-size: 0.72rem;
+      color: var(--text-muted);
+    }
+
+    .hero-ctas {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.9rem;
+      margin-top: 0.8rem;
+      align-items: center;
+    }
+
+    .hero-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.9rem;
+      margin-top: 0.7rem;
+      font-size: 0.78rem;
+      color: var(--text-muted);
+    }
+
+    .hero-meta-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.25rem 0.65rem;
+      border-radius: var(--radius-pill);
+      border: 1px dashed rgba(148, 163, 184, 0.6);
+    }
+
+    .hero-right {
+      position: relative;
+    }
+
+    .device-card {
+      border-radius: var(--radius-xl);
+      background: radial-gradient(circle at top left, #111827, #020617);
+      padding: 1rem;
+      border: 1px solid rgba(148, 163, 184, 0.5);
+      box-shadow: var(--shadow-soft);
+      position: relative;
+      overflow: hidden;
+      isolation: isolate;
+    }
+
+    .device-glow {
+      position: absolute;
+      inset: -40%;
+      opacity: 0.45;
+      background:
+        radial-gradient(circle at 20% 0, rgba(127, 90, 240, 0.85), transparent 55%),
+        radial-gradient(circle at 80% 0, rgba(44, 185, 255, 0.9), transparent 55%),
+        radial-gradient(circle at 50% 90%, rgba(34, 197, 94, 0.7), transparent 55%);
+      mix-blend-mode: screen;
+      pointer-events: none;
+    }
+
+    .device-inner {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+      gap: 1.1rem;
+      align-items: center;
+    }
+
+    .device-robot {
+      border-radius: var(--radius-lg);
+      background: radial-gradient(circle at 20% 0, rgba(255, 255, 255, 0.4), #020617);
+      border: 1px solid rgba(148, 163, 184, 0.7);
+      padding: 0.85rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .robot-face {
+      border-radius: 1rem;
+      background: radial-gradient(circle at 20% 0, #0f172a, #020617);
+      padding: 0.7rem;
+      border: 1px solid rgba(148, 163, 184, 0.6);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .robot-eyes {
+      display: flex;
+      gap: 0.7rem;
+      margin-top: 0.2rem;
+    }
+
+    .robot-eye {
+      width: 18px;
+      height: 18px;
+      border-radius: 999px;
+      background: radial-gradient(circle at 35% 30%, #ffffff, #38bdf8);
+      box-shadow: 0 0 15px rgba(56, 189, 248, 0.9);
+    }
+
+    .robot-mouth {
+      width: 48px;
+      height: 6px;
+      border-radius: 999px;
+      background: radial-gradient(circle at 50% 0, #22c55e, #16a34a);
+      box-shadow: 0 0 12px rgba(34, 197, 94, 0.8);
+      margin-top: 0.25rem;
+    }
+
+    .robot-body {
+      margin-top: 0.5rem;
+      width: 100%;
+      height: 40px;
+      border-radius: 0.9rem;
+      background: linear-gradient(145deg, #020617, #020617);
+      border: 1px solid rgba(148, 163, 184, 0.5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      gap: 0.35rem;
+    }
+
+    .robot-pill {
+      padding: 0.15rem 0.55rem;
+      border-radius: var(--radius-pill);
+      font-size: 0.65rem;
+      border: 1px solid rgba(148, 163, 184, 0.75);
+      background: rgba(15, 23, 42, 0.9);
+    }
+
+    .device-software {
+      border-radius: var(--radius-lg);
+      background: radial-gradient(circle at 0 0, rgba(127, 90, 240, 0.6), #020617);
+      border: 1px solid rgba(148, 163, 184, 0.7);
+      padding: 0.9rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.7rem;
+      font-size: 0.8rem;
+    }
+
+    .device-software-title {
+      font-weight: 600;
+      font-size: 0.85rem;
+    }
+
+    .device-software-grid {
+      display: grid;
+      grid-template-columns: 1.1fr 1fr;
+      gap: 0.5rem;
+    }
+
+    .device-chip {
+      font-size: 0.72rem;
+      padding: 0.25rem 0.5rem;
+      border-radius: var(--radius-pill);
+      border: 1px solid rgba(148, 163, 184, 0.7);
+      background: rgba(15, 23, 42, 0.88);
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+    }
+
+    .device-chip-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+    }
+
+    .dot-success {
+      background: radial-gradient(circle at 30% 20%, #ffffff, var(--success));
+      box-shadow: 0 0 10px rgba(34, 197, 94, 0.9);
+    }
+
+    .dot-danger {
+      background: radial-gradient(circle at 30% 20%, #ffffff, var(--danger));
+      box-shadow: 0 0 10px rgba(248, 113, 113, 0.9);
+    }
+
+    .device-footer {
+      margin-top: 0.75rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 0.75rem;
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+
+    .device-footer span strong {
+      color: var(--accent-secondary);
+    }
+
+    .device-footer-right {
+      display: flex;
+      gap: 0.45rem;
+    }
+
+    .pill-soft {
+      font-size: 0.7rem;
+      border-radius: var(--radius-pill);
+      padding: 0.2rem 0.55rem;
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid rgba(148, 163, 184, 0.55);
+    }
+
+    /* Sections */
+
+    section {
+      margin-top: 3rem;
+    }
+
+    .section-heading {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 1rem;
+      margin-bottom: 1.4rem;
+    }
+
+    .section-title {
+      font-size: 1.4rem;
+      font-weight: 600;
+    }
+
+    .section-subtitle {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      max-width: 22rem;
+    }
+
+    .badge {
+      font-size: 0.7rem;
+      border-radius: var(--radius-pill);
+      padding: 0.15rem 0.6rem;
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid rgba(148, 163, 184, 0.6);
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--accent-secondary);
+    }
+
+    /* Features */
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 1rem;
+    }
+
+    .card {
+      border-radius: var(--radius-lg);
+      border: 1px solid rgba(148, 163, 184, 0.45);
+      background: radial-gradient(circle at top, rgba(15, 23, 42, 0.98), #020617);
+      padding: 1rem;
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.6);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card::before {
+      content: "";
+      position: absolute;
+      inset: -40%;
+      opacity: 0.3;
+      background: radial-gradient(circle at top left, rgba(127, 90, 240, 0.7), transparent 55%);
+      pointer-events: none;
+    }
+
+    .card-inner {
+      position: relative;
+      z-index: 1;
+    }
+
+    .card-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 999px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid rgba(148, 163, 184, 0.7);
+      margin-bottom: 0.7rem;
+      font-size: 0.9rem;
+    }
+
+    .card-title {
+      font-size: 0.95rem;
+      font-weight: 600;
+      margin-bottom: 0.2rem;
+    }
+
+    .card-text {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-bottom: 0.5rem;
+    }
+
+    .card-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.35rem;
+      margin-top: 0.25rem;
+    }
+
+    .tag {
+      font-size: 0.68rem;
+      padding: 0.15rem 0.5rem;
+      border-radius: var(--radius-pill);
+      border: 1px solid rgba(148, 163, 184, 0.7);
+      background: rgba(15, 23, 42, 0.9);
+      color: var(--text-muted);
+    }
+
+    /* Split Section */
+
+    .split {
+      display: grid;
+      grid-template-columns: minmax(0, 1.15fr) minmax(0, 1.1fr);
+      gap: 1.5rem;
+    }
+
+    .split-col {
+      display: flex;
+      flex-direction: column;
+      gap: 0.9rem;
+    }
+
+    .list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+      font-size: 0.82rem;
+      color: var(--text-muted);
+    }
+
+    .list-item {
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    .list-bullet {
+      margin-top: 0.25rem;
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, var(--accent), var(--accent-secondary));
+    }
+
+    .list-bold {
+      font-weight: 500;
+      color: #e5e7eb;
+    }
+
+    .chip-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.45rem;
+      margin-top: 0.3rem;
+    }
+
+    .chip {
+      font-size: 0.72rem;
+      padding: 0.22rem 0.6rem;
+      border-radius: var(--radius-pill);
+      border: 1px solid rgba(148, 163, 184, 0.6);
+      background: rgba(15, 23, 42, 0.9);
+      color: var(--text-muted);
+    }
+
+    .badge-soft {
+      border-radius: var(--radius-pill);
+      padding: 0.2rem 0.55rem;
+      border: 1px dashed rgba(148, 163, 184, 0.7);
+      font-size: 0.7rem;
+      color: var(--text-muted);
+    }
+
+    /* Pricing */
+
+    .pricing-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 1rem;
+    }
+
+    .pricing-card {
+      border-radius: var(--radius-lg);
+      border: 1px solid rgba(148, 163, 184, 0.6);
+      background: radial-gradient(circle at top, rgba(15, 23, 42, 0.98), #020617);
+      padding: 1rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .pricing-card.highlight {
+      border-color: var(--accent);
+      box-shadow: 0 20px 50px rgba(127, 90, 240, 0.6);
+      transform: translateY(-2px);
+    }
+
+    .pricing-plan {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.13em;
+      color: var(--accent-secondary);
+      margin-bottom: 0.2rem;
+    }
+
+    .pricing-price {
+      font-size: 1.3rem;
+      font-weight: 600;
+    }
+
+    .pricing-period {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      margin-left: 0.1rem;
+    }
+
+    .pricing-note {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      margin-top: 0.25rem;
+    }
+
+    .pricing-list {
+      margin-top: 0.75rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+      font-size: 0.78rem;
+      color: var(--text-muted);
+    }
+
+    .pricing-list-item {
+      display: flex;
+      gap: 0.4rem;
+    }
+
+    .pricing-dot {
+      margin-top: 0.22rem;
+      width: 6px;
+      height: 6px;
+      border-radius: 999px;
+      background: var(--accent-secondary);
+    }
+
+    .pricing-footer {
+      margin-top: 0.75rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 0.6rem;
+      font-size: 0.74rem;
+      color: var(--text-muted);
+    }
+
+    /* Roadmap */
+
+    .timeline {
+      border-radius: var(--radius-lg);
+      border: 1px solid rgba(148, 163, 184, 0.5);
+      background: radial-gradient(circle at top, rgba(15, 23, 42, 0.98), #020617);
+      padding: 1rem;
+    }
+
+    .timeline-row {
+      display: grid;
+      grid-template-columns: 0.08fr 1fr;
+      gap: 0.75rem;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      padding: 0.45rem 0;
+    }
+
+    .timeline-row:not(:last-child) {
+      border-bottom: 1px dashed rgba(55, 65, 81, 0.9);
+    }
+
+    .timeline-marker {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.2rem;
+    }
+
+    .timeline-dot-big {
+      width: 12px;
+      height: 12px;
+      border-radius: 999px;
+      background: radial-gradient(circle at 30% 30%, #ffffff, var(--accent));
+      box-shadow: 0 0 18px rgba(127, 90, 240, 0.9);
+    }
+
+    .timeline-line {
+      flex: 1;
+      width: 2px;
+      background: linear-gradient(to bottom, rgba(148, 163, 184, 0.8), transparent);
+    }
+
+    .timeline-title {
+      font-weight: 500;
+      color: #e5e7eb;
+    }
+
+    .timeline-meta {
+      font-size: 0.72rem;
+      margin-top: 0.1rem;
+      margin-bottom: 0.35rem;
+      color: var(--accent-secondary);
+    }
+
+    .timeline-tags {
+      margin-top: 0.25rem;
+    }
+
+    /* FAQ */
+
+    .faq-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+      gap: 1.6rem;
+    }
+
+    .faq-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .faq-item {
+      border-radius: 0.85rem;
+      border: 1px solid rgba(148, 163, 184, 0.5);
+      background: radial-gradient(circle at top, rgba(15, 23, 42, 0.98), #020617);
+      padding: 0.75rem 0.85rem;
+      cursor: pointer;
+    }
+
+    .faq-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 0.6rem;
+    }
+
+    .faq-question {
+      font-size: 0.82rem;
+      font-weight: 500;
+    }
+
+    .faq-toggle {
+      width: 22px;
+      height: 22px;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.6);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+
+    .faq-answer {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      margin-top: 0.5rem;
+      line-height: 1.5;
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 220ms ease-out;
+    }
+
+    .faq-item.open .faq-answer {
+      max-height: 160px;
+    }
+
+    .faq-note {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-top: 0.6rem;
+    }
+
+    /* CTA / Contact */
+
+    .cta {
+      border-radius: var(--radius-xl);
+      border: 1px solid rgba(148, 163, 184, 0.6);
+      background: radial-gradient(circle at top, rgba(15, 23, 42, 0.98), #020617);
+      padding: 1.3rem 1.2rem;
+      display: grid;
+      grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+      gap: 1.4rem;
+      align-items: center;
+      box-shadow: var(--shadow-soft);
+    }
+
+    .cta-title {
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin-bottom: 0.25rem;
+    }
+
+    .cta-text {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      max-width: 26rem;
+    }
+
+    .cta-form {
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+      font-size: 0.8rem;
+    }
+
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 0.3rem;
+    }
+
+    .field label {
+      color: var(--text-muted);
+    }
+
+    .field input,
+    .field textarea {
+      border-radius: 0.7rem;
+      border: 1px solid rgba(148, 163, 184, 0.5);
+      background: rgba(15, 23, 42, 0.9);
+      padding: 0.45rem 0.65rem;
+      color: var(--text-main);
+      font-size: 0.8rem;
+      outline: none;
+      resize: vertical;
+      min-height: 34px;
+    }
+
+    .field input:focus,
+    .field textarea:focus {
+      border-color: var(--accent-secondary);
+      box-shadow: 0 0 0 1px rgba(44, 185, 255, 0.5);
+    }
+
+    .form-note {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+
+    footer {
+      margin-top: 2.4rem;
+      padding-top: 1.2rem;
+      border-top: 1px solid rgba(31, 41, 55, 0.95);
+      font-size: 0.74rem;
+      color: var(--text-muted);
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      justify-content: space-between;
+    }
+
+    .footer-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.6rem;
+    }
+
+    .footer-links a {
+      color: var(--text-muted);
+    }
+
+    .footer-links a:hover {
+      color: var(--text-main);
+    }
+
+    /* Responsive */
+
+    @media (max-width: 960px) {
+      .hero {
+        grid-template-columns: minmax(0, 1fr);
+      }
+
+      .hero-right {
+        order: -1;
+      }
+
+      .features-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .split {
+        grid-template-columns: minmax(0, 1fr);
+      }
+
+      .pricing-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .cta {
+        grid-template-columns: minmax(0, 1fr);
+      }
+
+      .faq-grid {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+
+    @media (max-width: 768px) {
+      .nav-links {
+        display: none;
+      }
+
+      .nav-cta {
+        display: none;
+      }
+
+      .nav-mobile-toggle {
+        display: inline-flex;
+      }
+
+      .page {
+        padding: 1.1rem 1.1rem 2.4rem;
+      }
+
+      .hero-highlight {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .features-grid {
+        grid-template-columns: minmax(0, 1fr);
+      }
+
+      .pricing-grid {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <div class="nav-inner">
+      <div class="logo">
+        <div class="logo-orb">
+          <div class="logo-orb-inner"></div>
+        </div>
+        <div>
+          <div class="logo-text-main">Pico AI</div>
+          <div class="logo-text-tag">Offline + Online Companion</div>
+        </div>
+      </div>
+
+      <nav class="nav-links">
+        <a href="#features">Features</a>
+        <a href="#architecture">How It Works</a>
+        <a href="#pricing">Pricing</a>
+        <a href="#roadmap">Roadmap</a>
+        <a href="#faq">FAQ</a>
+      </nav>
+
+      <div class="nav-cta">
+        <button class="btn btn-outline" onclick="scrollToSection('architecture')">
+          View Tech Stack
+        </button>
+        <button class="btn btn-primary" onclick="scrollToSection('contact')">
+          Join Early Access →
+        </button>
+      </div>
+
+      <button class="nav-mobile-toggle" id="navToggle" aria-label="Toggle navigation">
+        <span></span>
+      </button>
+    </div>
+
+    <div class="nav-links-mobile" id="navMobile">
+      <a href="#features" onclick="closeMobileNav()">Features</a>
+      <a href="#architecture" onclick="closeMobileNav()">How It Works</a>
+      <a href="#pricing" onclick="closeMobileNav()">Pricing</a>
+      <a href="#roadmap" onclick="closeMobileNav()">Roadmap</a>
+      <a href="#faq" onclick="closeMobileNav()">FAQ</a>
+      <a href="#contact" onclick="closeMobileNav()">Join Early Access</a>
+    </div>
+  </header>
+
+  <main class="page page-main">
+    <!-- HERO -->
+    <section class="hero" id="top">
+      <div class="hero-left">
+        <div class="hero-eyebrow">
+          <div class="btn-pill-soft">
+            <span class="pill-dot"></span>
+            Prototype • Pitch Ready
+          </div>
+          <span>Hardware + Software • One AI brain</span>
+        </div>
+
+        <h1 class="hero-title">
+          Meet <span class="accent">Pico AI</span>, your
+          <span class="accent">physical & digital</span> AI companion.
+        </h1>
+
+        <p class="hero-subtitle">
+          A cute, reliable AI bot that lives on your desk <b>and</b> in your devices.
+          Offline edge AI for privacy and reliability, plus powerful cloud AI
+          when you’re online – all under one intelligent personality.
+        </p>
+
+        <div class="hero-highlight">
+          <div class="hero-highlight-item">
+            <strong>Hybrid Intelligence</strong>
+            <span>Offline LLM + cloud AI for deeper reasoning.</span>
+          </div>
+          <div class="hero-highlight-item">
+            <strong>Dual Presence</strong>
+            <span>Physical robot + mobile & desktop assistant.</span>
+          </div>
+          <div class="hero-highlight-item">
+            <strong>Subscription Ready</strong>
+            <span>Hardware sale + tiered AI access model.</span>
+          </div>
+        </div>
+
+        <div class="hero-ctas">
+          <button class="btn btn-primary" onclick="scrollToSection('contact')">
+            Request Demo Access
+          </button>
+          <button class="btn btn-outline" onclick="scrollToSection('features')">
+            Explore Pico’s Capabilities
+          </button>
+        </div>
+
+        <div class="hero-meta">
+          <div class="hero-meta-pill">
+            <span class="pill-dot"></span>
+            Offline-first design for privacy-sensitive users.
+          </div>
+          <span>Target users: homes, students, educators, and smart offices.</span>
+        </div>
+      </div>
+
+      <div class="hero-right">
+        <div class="device-card">
+          <div class="device-glow"></div>
+          <div class="device-inner">
+            <!-- Robot visual -->
+            <div class="device-robot">
+              <div class="robot-face">
+                <div class="robot-eyes">
+                  <div class="robot-eye"></div>
+                  <div class="robot-eye"></div>
+                </div>
+                <div class="robot-mouth"></div>
+                <div class="robot-body">
+                  <span class="robot-pill">Edge AI Online / Offline</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Software + architecture summary -->
+            <div class="device-software">
+              <div class="device-software-title">
+                Pico AI • System Snapshot
+              </div>
+              <div class="device-software-grid">
+                <div>
+                  <div class="device-chip">
+                    <span class="device-chip-dot dot-success"></span>
+                    Offline LLM on-device
+                  </div>
+                  <div class="device-chip" style="margin-top: 0.4rem">
+                    <span class="device-chip-dot dot-success"></span>
+                    Wake-word & voice pipeline
+                  </div>
+                  <div class="device-chip" style="margin-top: 0.4rem">
+                    <span class="device-chip-dot dot-success"></span>
+                    Multilingual (English + Hindi ready)
+                  </div>
+                </div>
+                <div>
+                  <div class="device-chip">
+                    <span class="device-chip-dot dot-danger"></span>
+                    Cloud AI burst mode
+                  </div>
+                  <div class="device-chip" style="margin-top: 0.4rem">
+                    <span class="device-chip-dot dot-danger"></span>
+                    Central model on secure servers
+                  </div>
+                  <div class="device-chip" style="margin-top: 0.4rem">
+                    <span class="device-chip-dot dot-danger"></span>
+                    Subscription-based access
+                  </div>
+                </div>
+              </div>
+              <div class="device-footer">
+                <span>Battery: <strong>6+ hrs</strong> active use</span>
+                <div class="device-footer-right">
+                  <div class="pill-soft">Raspberry Pi / NPU SBC</div>
+                  <div class="pill-soft">5–7" Display + Mic + Speaker</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FEATURES -->
+    <section id="features">
+      <div class="section-heading">
+        <div>
+          <div class="badge">Features</div>
+          <h2 class="section-title">Designed for real-world daily use</h2>
+        </div>
+        <p class="section-subtitle">
+          Pico AI isn’t just a demo robot. It’s built to handle communication,
+          tasks, and work – with a practical hardware stack and a scalable
+          AI model architecture.
+        </p>
+      </div>
+
+      <div class="features-grid">
+        <div class="card">
+          <div class="card-inner">
+            <div class="card-icon">⚡</div>
+            <h3 class="card-title">Offline-first Edge AI</h3>
+            <p class="card-text">
+              Core AI logic runs directly on the device using an on-device LLM,
+              wake-word detection, and local memory. Pico can respond, assist,
+              and automate even without internet.
+            </p>
+            <div class="card-tags">
+              <span class="tag">Local LLM</span>
+              <span class="tag">Wake-word: “Hey Pico”</span>
+              <span class="tag">Low-latency replies</span>
+              <span class="tag">Privacy friendly</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-inner">
+            <div class="card-icon">🌐</div>
+            <h3 class="card-title">Cloud Superpowers</h3>
+            <p class="card-text">
+              When online, Pico connects with a powerful central AI model
+              hosted on our servers. Users unlock advanced reasoning, internet
+              search, content generation, and vision-based tasks via
+              subscription tiers.
+            </p>
+            <div class="card-tags">
+              <span class="tag">Hosted AI brain</span>
+              <span class="tag">Computer vision</span>
+              <span class="tag">Automation APIs</span>
+              <span class="tag">Pro-mode assist</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-inner">
+            <div class="card-icon">🤖</div>
+            <h3 class="card-title">Physical + Software Companion</h3>
+            <p class="card-text">
+              Pico exists as a cute physical bot and a software assistant on
+              mobile/desktop. Both share the same identity, memory, and
+              preferences – so users feel continuity across devices.
+            </p>
+            <div class="card-tags">
+              <span class="tag">Hardware bot</span>
+              <span class="tag">Mobile & desktop app</span>
+              <span class="tag">Unified memory</span>
+              <span class="tag">Consistent personality</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ARCHITECTURE / HARDWARE -->
+    <section id="architecture">
+      <div class="section-heading">
+        <div>
+          <div class="badge">Architecture</div>
+          <h2 class="section-title">Practical, buildable stack – not sci-fi</h2>
+        </div>
+        <p class="section-subtitle">
+          Pico AI uses off-the-shelf components and a modular software stack,
+          making it realistic to prototype, iterate, and scale.
+        </p>
+      </div>
+
+      <div class="split">
+        <div class="split-col">
+          <h3 class="card-title">Hardware Blueprint</h3>
+          <p class="card-text">
+            The first version of Pico AI focuses on being compact, affordable,
+            and emotionally engaging – perfect for desks, study tables,
+            and bedside use.
+          </p>
+
+          <div class="list">
+            <div class="list-item">
+              <div class="list-bullet"></div>
+              <div>
+                <span class="list-bold">Compute:</span> Raspberry Pi 5 or
+                similar Single Board Computer with optional NPU add-on for faster AI inference.
+              </div>
+            </div>
+            <div class="list-item">
+              <div class="list-bullet"></div>
+              <div>
+                <span class="list-bold">Display:</span> 5–7" IPS touchscreen
+                for expressive eyes, visual feedback, and quick actions.
+              </div>
+            </div>
+            <div class="list-item">
+              <div class="list-bullet"></div>
+              <div>
+                <span class="list-bold">Audio I/O:</span> Dual far-field
+                microphones + stereo speakers tuned for clear voice output.
+              </div>
+            </div>
+            <div class="list-item">
+              <div class="list-bullet"></div>
+              <div>
+                <span class="list-bold">Sensors:</span> 5MP camera module
+                for face recognition, object detection, and gesture-based interactions.
+              </div>
+            </div>
+            <div class="list-item">
+              <div class="list-bullet"></div>
+              <div>
+                <span class="list-bold">Battery:</span> 5000–8000 mAh battery,
+                delivering 4–6 hours of active use with intelligent power management.
+              </div>
+            </div>
+            <div class="list-item">
+              <div class="list-bullet"></div>
+              <div>
+                <span class="list-bold">Motion:</span> Small servo motors
+                for head tilts and subtle gestures that increase emotional bonding.
+              </div>
+            </div>
+          </div>
+
+          <div class="chip-row">
+            <div class="chip">Compact desktop form</div>
+            <div class="chip">Under ~1 kg target weight</div>
+            <div class="chip">Easy plastic / 3D-printed shell</div>
+          </div>
+        </div>
+
+        <div class="split-col">
+          <h3 class="card-title">Software & AI Stack</h3>
+          <p class="card-text">
+            The architecture separates offline intelligence from cloud features
+            while keeping the user experience smooth and unified.
+          </p>
+
+          <div class="list">
+            <div class="list-item">
+              <div class="list-bullet"></div>
+              <div>
+                <span class="list-bold">Offline Layer:</span> On-device LLM
+                for chat, reminders, notes, and simple task automation. Wake-word engine
+                listens locally and never leaves the device.
+              </div>
+            </div>
+            <div class="list-item">
+              <div class="list-bullet"></div>
+              <div>
+                <span class="list-bold">Cloud Layer:</span> Central AI
+                model hosted on our secure servers. Handles heavy reasoning,
+                vision tasks, research, content creation, and multi-app workflows.
+              </div>
+            </div>
+            <div class="list-item">
+              <div class="list-bullet"></div>
+              <div>
+                <span class="list-bold">Connectivity:</span> Wi-Fi + Bluetooth
+                for syncing with phones, PCs, and smart home devices.
+              </div>
+            </div>
+            <div class="list-item">
+              <div class="list-bullet"></div>
+              <div>
+                <span class="list-bold">Security:</span> End-to-end
+                encryption, local preference storage, and transparent data controls.
+              </div>
+            </div>
+            <div class="list-item">
+              <div class="list-bullet"></div>
+              <div>
+                <span class="list-bold">Updates:</span> Over-the-air updates
+                for new skills, languages, and integrations via a managed
+                “Pico Skill Store”.
+              </div>
+            </div>
+          </div>
+
+          <div class="chip-row">
+            <div class="badge-soft">Designed for India first</div>
+            <div class="chip">English + Hindi at launch</div>
+            <div class="chip">API hooks for 3rd-party apps</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PRICING -->
+    <section id="pricing">
+      <div class="section-heading">
+        <div>
+          <div class="badge">Business Model</div>
+          <h2 class="section-title">Hardware + recurring AI subscription</h2>
+        </div>
+        <p class="section-subtitle">
+          Pico AI is built as a sustainable business: one-time device revenue
+          plus recurring subscription for advanced AI features.
+        </p>
+      </div>
+
+      <div class="pricing-grid">
+        <div class="pricing-card">
+          <div class="pricing-plan">Basic</div>
+          <div class="pricing-price">
+            Included<span class="pricing-period"> with Pico device</span>
+          </div>
+          <p class="pricing-note">
+            Offline AI experience out of the box. No mandatory subscription.
+          </p>
+          <div class="pricing-list">
+            <div class="pricing-list-item">
+              <div class="pricing-dot"></div>
+              <div>Local chat & voice interaction.</div>
+            </div>
+            <div class="pricing-list-item">
+              <div class="pricing-dot"></div>
+              <div>Reminders, timers, alarms, and notes.</div>
+            </div>
+            <div class="pricing-list-item">
+              <div class="pricing-dot"></div>
+              <div>Offline basic knowledge and small talk.</div>
+            </div>
+            <div class="pricing-list-item">
+              <div class="pricing-dot"></div>
+              <div>Local device control (brightness, volume, etc.).</div>
+            </div>
+          </div>
+          <div class="pricing-footer">
+            <span>Ideal for kids, families, and casual users.</span>
+          </div>
+        </div>
+
+        <div class="pricing-card highlight">
+          <div class="pricing-plan">Smart</div>
+          <div class="pricing-price">
+            ₹99-149<span class="pricing-period"> / month (target)</span>
+          </div>
+          <p class="pricing-note">
+            Unlock cloud intelligence + advanced workflows for power users.
+          </p>
+          <div class="pricing-list">
+            <div class="pricing-list-item">
+              <div class="pricing-dot"></div>
+              <div>Access to cloud AI model hosted on our servers.</div>
+            </div>
+            <div class="pricing-list-item">
+              <div class="pricing-dot"></div>
+              <div>Content generation: mails, summaries, study notes.</div>
+            </div>
+            <div class="pricing-list-item">
+              <div class="pricing-dot"></div>
+              <div>Live internet queries & information lookup.</div>
+            </div>
+            <div class="pricing-list-item">
+              <div class="pricing-dot"></div>
+              <div>Cross-device sync with Pico mobile & desktop apps.</div>
+            </div>
+          </div>
+          <div class="pricing-footer">
+            <span>Perfect for students & professionals.</span>
+            <button class="btn btn-primary" onclick="scrollToSection('contact')">
+              Join Pilot Cohort
+            </button>
+          </div>
+        </div>
+
+        <div class="pricing-card">
+          <div class="pricing-plan">Pro</div>
+          <div class="pricing-price">
+            ₹249+<span class="pricing-period"> / month (target)</span>
+          </div>
+          <p class="pricing-note">
+            For schools, teams, and advanced personal power users.
+          </p>
+          <div class="pricing-list">
+            <div class="pricing-list-item">
+              <div class="pricing-dot"></div>
+              <div>Multi-user profiles per device.</div>
+            </div>
+            <div class="pricing-list-item">
+              <div class="pricing-dot"></div>
+              <div>Automation hooks (calendar, tasks, smart home APIs).</div>
+            </div>
+            <div class="pricing-list-item">
+              <div class="pricing-dot"></div>
+              <div>Administrative dashboard & usage analytics.</div>
+            </div>
+            <div class="pricing-list-item">
+              <div class="pricing-dot"></div>
+              <div>Priority support and early feature access.</div>
+            </div>
+          </div>
+          <div class="pricing-footer">
+            <span>Target: institutions, offices, and labs.</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ROADMAP -->
+    <section id="roadmap">
+      <div class="section-heading">
+        <div>
+          <div class="badge">Roadmap</div>
+          <h2 class="section-title">Step-by-step path to launch</h2>
+        </div>
+        <p class="section-subtitle">
+          A realistic execution plan – from concept and prototype to pilot
+          rollout and full-scale launch.
+        </p>
+      </div>
+
+      <div class="timeline">
+        <div class="timeline-row">
+          <div class="timeline-marker">
+            <div class="timeline-dot-big"></div>
+            <div class="timeline-line"></div>
+          </div>
+          <div>
+            <div class="timeline-title">Phase 1 – Prototype (0–3 months)</div>
+            <div class="timeline-meta">Hardware + basic offline AI</div>
+            <p>
+              Assemble first Pico AI prototypes using Raspberry Pi, 5–7" display,
+              mics, camera, and speakers. Integrate wake-word, small local LLM,
+              and basic conversational flows.
+            </p>
+            <div class="timeline-tags chip-row">
+              <div class="chip">3D-printed shell</div>
+              <div class="chip">Edge AI experiments</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="timeline-row">
+          <div class="timeline-marker">
+            <div class="timeline-dot-big"></div>
+            <div class="timeline-line"></div>
+          </div>
+          <div>
+            <div class="timeline-title">Phase 2 – Software & Apps (4–8 months)</div>
+            <div class="timeline-meta">Mobile & desktop companion</div>
+            <p>
+              Launch Pico apps for mobile and desktop that mirror the same AI
+              brain. Build cloud backend, user accounts, and subscription logic.
+            </p>
+            <div class="timeline-tags chip-row">
+              <div class="chip">Secure user login</div>
+              <div class="chip">API-based model backend</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="timeline-row">
+          <div class="timeline-marker">
+            <div class="timeline-dot-big"></div>
+            <div class="timeline-line"></div>
+          </div>
+          <div>
+            <div class="timeline-title">Phase 3 – Pilot (9–18 months)</div>
+            <div class="timeline-meta">50–100 units in real homes & schools</div>
+            <p>
+              Deploy Pico AI units in select homes, coaching centers, and
+              classrooms. Measure engagement, retention, and subscription uptake.
+            </p>
+            <div class="timeline-tags chip-row">
+              <div class="chip">User feedback loop</div>
+              <div class="chip">Pricing experiments</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="timeline-row">
+          <div class="timeline-marker">
+            <div class="timeline-dot-big"></div>
+          </div>
+          <div>
+            <div class="timeline-title">Phase 4 – Scale (18+ months)</div>
+            <div class="timeline-meta">Nationwide availability</div>
+            <p>
+              Optimize manufacturing cost, expand language support, and open the
+              Pico Skill Store for developers. Target e-commerce and B2B
+              partnerships.
+            </p>
+            <div class="timeline-tags chip-row">
+              <div class="chip">Skill marketplace</div>
+              <div class="chip">Retail + online launch</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ / JUDGES AREA -->
+    <section id="faq">
+      <div class="section-heading">
+        <div>
+          <div class="badge">FAQ & Investor View</div>
+          <h2 class="section-title">Questions judges might ask</h2>
+        </div>
+        <p class="section-subtitle">
+          Pico AI directly addresses practicality, cost, and scalability
+          to make the concept pitch-ready.
+        </p>
+      </div>
+
+      <div class="faq-grid">
+        <div>
+          <div class="faq-list">
+            <div class="faq-item">
+              <div class="faq-header">
+                <div class="faq-question">
+                  How is Pico AI different from Alexa or Google Home?
+                </div>
+                <div class="faq-toggle">+</div>
+              </div>
+              <div class="faq-answer">
+                Alexa and Google Home are mainly smart speakers that depend on
+                constant internet and stay locked inside a single device. Pico
+                AI combines a physical companion robot <b>and</b> software apps,
+                with an offline mode that keeps working even when internet
+                fails. It focuses on emotional bonding, privacy, and
+                continuity across devices.
+              </div>
+            </div>
+
+            <div class="faq-item">
+              <div class="faq-header">
+                <div class="faq-question">
+                  Is this technically and financially feasible?
+                </div>
+                <div class="faq-toggle">+</div>
+              </div>
+              <div class="faq-answer">
+                Yes. The first version relies on accessible components like
+                Raspberry Pi, microphones, and a small display. The software
+                stack uses existing open-source models for offline AI and a
+                standard cloud backend for online AI. Manufacturing starts
+                small (50–100 units) and scales only after pilot validation.
+              </div>
+            </div>
+
+            <div class="faq-item">
+              <div class="faq-header">
+                <div class="faq-question">
+                  How will Pico AI earn money after selling the device?
+                </div>
+                <div class="faq-toggle">+</div>
+              </div>
+              <div class="faq-answer">
+                Pico AI follows a hybrid model: one-time hardware sales plus
+                recurring subscription for cloud AI features. On top of that,
+                the Pico Skill Store enables third-party skill developers,
+                which opens an additional revenue share model similar to app
+                stores.
+              </div>
+            </div>
+
+            <div class="faq-item">
+              <div class="faq-header">
+                <div class="faq-question">
+                  Why focus on offline AI in a hyper-connected world?
+                </div>
+                <div class="faq-toggle">+</div>
+              </div>
+              <div class="faq-answer">
+                Users increasingly care about privacy, control, and reliability.
+                Offline AI ensures that Pico can help in low-network regions,
+                power cuts, and private spaces. It also reduces cloud cost per
+                user and builds strong differentiation from cloud-only players.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <div class="card">
+            <div class="card-inner">
+              <h3 class="card-title">Investor Snapshot</h3>
+              <p class="card-text">
+                Pico AI targets the growing market of affordable home robotics
+                and AI companions, starting with India. With a clear hardware
+                plan, modular software stack, and subscription-driven model,
+                it is built to be both technically feasible and
+                commercially scalable.
+              </p>
+
+              <div class="list" style="margin-top: 0.7rem;">
+                <div class="list-item">
+                  <div class="list-bullet"></div>
+                  <div>Early focus: students, families, coaching centers.</div>
+                </div>
+                <div class="list-item">
+                  <div class="list-bullet"></div>
+                  <div>Phase-wise expansion into B2B use-cases (schools & offices).</div>
+                </div>
+                <div class="list-item">
+                  <div class="list-bullet"></div>
+                  <div>High retention potential due to emotional bonding.</div>
+                </div>
+              </div>
+
+              <div class="chip-row" style="margin-top: 0.7rem;">
+                <div class="chip">Cute, reliable, and practical</div>
+                <div class="chip">Edge + cloud hybrid AI</div>
+                <div class="chip">Subscription-friendly model</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA / CONTACT -->
+    <section id="contact">
+      <div class="cta">
+        <div>
+          <div class="btn-pill-soft">
+            <span class="pill-dot"></span>
+            Early Access • Limited
+          </div>
+          <h2 class="cta-title">Interested in Pico AI for your home, school, or lab?</h2>
+          <p class="cta-text">
+            Share your details to be part of the pilot batch. For judges and
+            mentors, this section can represent your planned lead-capture or
+            investor interest form on a real landing page.
+          </p>
+        </div>
+
+        <form class="cta-form" onsubmit="handleFormSubmit(event)">
+          <div class="field">
+            <label for="name">Name</label>
+            <input id="name" type="text" placeholder="Enter your name" required />
+          </div>
+          <div class="field">
+            <label for="email">Email</label>
+            <input id="email" type="email" placeholder="name@example.com" required />
+          </div>
+          <div class="field">
+            <label for="type">Who are you?</label>
+            <input
+              id="type"
+              type="text"
+              placeholder="Student, parent, teacher, investor, etc."
+            />
+          </div>
+          <div class="field">
+            <label for="message">What excites you about Pico AI?</label>
+            <textarea
+              id="message"
+              rows="3"
+              placeholder="Tell us how you’d like to use Pico AI…"
+            ></textarea>
+          </div>
+          <button class="btn btn-primary" type="submit">Submit Interest</button>
+          <p class="form-note" id="formNote">
+            This is a demo form for the landing page. In production, it would
+            connect to a backend or email.
+          </p>
+        </form>
+      </div>
+    </section>
+
+    <footer>
+      <span>© <span id="year"></span> Pico AI • Hybrid AI Companion</span>
+      <div class="footer-links">
+        <a href="#top">Back to top</a>
+        <a href="#features">Features</a>
+        <a href="#pricing">Pricing</a>
+        <a href="#contact">Contact</a>
+      </div>
+    </footer>
+  </main>
+
+  <script>
+    // Smooth scroll to sections
+    function scrollToSection(id) {
+      const el = document.getElementById(id);
+      if (el) {
+        el.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
+    }
+
+    // Mobile nav
+    const navToggle = document.getElementById("navToggle");
+    const navMobile = document.getElementById("navMobile");
+
+    if (navToggle) {
+      navToggle.addEventListener("click", () => {
+        navToggle.classList.toggle("active");
+        navMobile.classList.toggle("open");
+      });
+    }
+
+    function closeMobileNav() {
+      if (!navMobile) return;
+      navMobile.classList.remove("open");
+      navToggle.classList.remove("active");
+    }
+
+    // FAQ accordion
+    document.querySelectorAll(".faq-item").forEach((item) => {
+      item.addEventListener("click", () => {
+        const isOpen = item.classList.contains("open");
+        document.querySelectorAll(".faq-item").forEach((i) => {
+          i.classList.remove("open");
+          const toggle = i.querySelector(".faq-toggle");
+          if (toggle) toggle.textContent = "+";
+        });
+        if (!isOpen) {
+          item.classList.add("open");
+          const toggle = item.querySelector(".faq-toggle");
+          if (toggle) toggle.textContent = "−";
+        }
+      });
+    });
+
+    // Fake form handler
+    function handleFormSubmit(e) {
+      e.preventDefault();
+      const note = document.getElementById("formNote");
+      if (note) {
+        note.textContent =
+          "Thank you! Your interest in Pico AI has been recorded (demo message).";
+      }
+      e.target.reset();
+    }
+
+    // Year in footer
+    document.getElementById("year").textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
